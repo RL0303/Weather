@@ -139,26 +139,45 @@ class CurrentViewController: UIViewController, UISearchBarDelegate, CLLocationMa
                 self.currentWeatherImg.image = UIImage(named: weatherIcon)
                 self.weatherDescLabel.text = weatherDesc.capitalized
                 self.locationLabel.text = cityName.capitalized
-                self.dateLabel.text = "Today: \(self.dateFormate(date))"
+                self.dateLabel.text = "\(self.dateFormate(date))"
                 self.localTimeLabel.text = self.timeFormate(localTime)
-                self.tempLabel.text = "\(Int(temp))ºC"
+                self.tempLabel.text = String(format: "%.0fºC", temp)  // 小數四捨五入
 //                self.tempFeelLabel.text = "\(self.tempFormate(tempFeel))℃"
-                self.tempMinLabel.text = "\(Int(tempMin))ºC    ~"
-                self.tempMaxLabel.text = "\(Int(tempMax))ºC"
+                self.tempMinLabel.text = String(format: "%.0fºC    ~", tempMin)  //小數四捨五入
+                self.tempMaxLabel.text = String(format: "%.0fºC", tempMax)  //小數四捨五入
                 self.humLabel.text = "\(hum) %"
                 self.windLabel.text = String(format: "%.2f", wind) + " m/s"
                 
-                
-//                if (suffix == "n") {
-//                    self.setDarkBlueGradient()
-//                }else{
-//                    self.setLightBlueGradient()
-//                }
+                print("suffix:",suffix)
+                if (suffix == "n") {
+                    print("setDarkBlueGradient")
+                    self.setDarkBlueGradient()
+                }else{
+                    print("setLightBlueGradient")
+                    self.setLightBlueGradient()
+                }
             }
         }
     }
     
-    // miss
+    func setLightBlueGradient() {
+        let topColor = UIColor(red: 71.0/255.0, green: 191.0/255.0, blue: 223.0/255, alpha: 1).cgColor
+        let bottomColor = UIColor(red: 74.0/255.0, green: 145.0/255.0, blue: 255.0/255, alpha: 1).cgColor
+        gradientLayer.frame = backgroundView.bounds
+        gradientLayer.startPoint = CGPoint(x: 1, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        gradientLayer.colors = [topColor, bottomColor]
+    }
+
+    
+    func setDarkBlueGradient() {
+        let topColor = UIColor(red: 19.0/255.0, green: 122.0/255.0, blue: 217.0/255, alpha: 1).cgColor
+        let bottomColor = UIColor(red: 8.0/255.0, green: 41.0/255.0, blue: 89.0/255, alpha: 1).cgColor
+        gradientLayer.frame = backgroundView.bounds
+        gradientLayer.startPoint = CGPoint(x: 1, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        gradientLayer.colors = [topColor, bottomColor]
+    }
     
 //    func tempFormate(_ f: Double) -> String {
 //        // 華氏轉換攝氏公式 ℃ = (℉-32)*5/9
@@ -197,6 +216,12 @@ class CurrentViewController: UIViewController, UISearchBarDelegate, CLLocationMa
     }
     
     // miss
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)  //點選空白處可收鍵盤
+        searchBar.isHidden = true  //點選空白處可收searchBar
+        
+    }
 
     /*
     // MARK: - Navigation
