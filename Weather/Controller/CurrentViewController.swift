@@ -215,7 +215,13 @@ class CurrentViewController: UIViewController, UISearchBarDelegate, CLLocationMa
         searchBar.isHidden = false
     }
     
-    // miss
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showForecast" {
+            if let forecastTableViewController = segue.destination as? ForecastTableViewController {
+                forecastTableViewController.cityName = self.locationLabel.text!
+            }
+        }
+    }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)  //點選空白處可收鍵盤
